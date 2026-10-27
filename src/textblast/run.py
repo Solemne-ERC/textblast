@@ -185,10 +185,12 @@ def run_job(run_dir: Path | str, job_id: int) -> JobResult:
                *plan_body["blast_args"], "-max_target_seqs", str(job["max_target_seqs"]),
                "-num_threads", str(threads), *(["-mt_mode", "1"] if threads > 1 else []), "-out", str(raw)]
         result = None
+        blastp_started = time.monotonic()
         for _ in range(2):  # one retry
             result = subprocess.run(cmd, capture_output=True, text=True)
             if result.returncode == 0:
                 break
+        blastp_seconds = time.monotonic() - blastp_started
         assert result is not None
         if result.returncode != 0:
             err = run_dir / "logs" / "jobs" / f"job_{job_id:05d}.err"
@@ -207,7 +209,8 @@ def run_job(run_dir: Path | str, job_id: int) -> JobResult:
             raw.replace(parquet.with_suffix(".tsv"))
         seconds = time.monotonic() - started
         _write_json(status_file, {"job_id": job_id, "status": "done", "hash": job_hash(plan_body, job),
-                                  "hits": hsps.height, "seconds": round(seconds, 2)})
+                                  "hits": hsps.height, "seconds": round(seconds, 2),
+                                  "blastp_seconds": round(blastp_seconds, 2)})
         return JobResult(job_id, "done", hsps.height, seconds)
     except Exception as error:  # report, never crash the pool
         _write_json(status_file, {"job_id": job_id, "status": "failed", "hash": job_hash(plan_body, job),
@@ -427,6 +430,7 @@ def run_all(config: RunConfig) -> Path:
     from .post import post
 
     run_dir = Path(config.run_dir).expanduser()
+    find_engine(config.engine.blast_bin, config.engine.version)  # no engine: say so before `prepare`, not after it
     prepare(prepare_part(config))
     plan(config)
     blast(run_dir, config.blast.workers, config.engine.force)

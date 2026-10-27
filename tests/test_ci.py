@@ -7,6 +7,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
 import yaml
 
 from textblast.engine.build import BuildOptions, fingerprint, resolve_openmp
@@ -15,6 +16,8 @@ from textblast.engine.versions import DEFAULT_VERSION, get_release
 REPO = Path(__file__).resolve().parents[1]
 WORKFLOW = REPO / ".github" / "workflows" / "ci.yml"
 KEY_SCRIPT = REPO / ".github" / "scripts" / "engine_key.py"
+
+pytestmark = pytest.mark.skipif(not WORKFLOW.is_file(), reason="no .github folder (e.g. tests from the sdist)")
 
 
 def test_engine_key_is_the_fingerprint(tmp_path: Path) -> None:

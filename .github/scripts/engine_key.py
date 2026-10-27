@@ -1,5 +1,7 @@
 """Write the default engine's cache paths and key to $GITHUB_OUTPUT, without building anything.
 
+    python engine_key.py [auto|on|off]   (the OpenMP choice, as given to `textblast engine build --openmp`)
+
 The key is the engine fingerprint (BLAST version, source checksum, patches, build options, system and machine), so a
 cache hit is exactly the engine that `textblast engine build` would produce.
 """
@@ -15,8 +17,9 @@ from textblast.engine.versions import DEFAULT_VERSION, get_release
 
 
 def main() -> None:
+    openmp = sys.argv[1] if len(sys.argv) > 1 else "auto"  # as given to `textblast engine build --openmp`
     release = get_release(DEFAULT_VERSION)
-    options = BuildOptions(openmp=resolve_openmp("auto"), projects="restricted")
+    options = BuildOptions(openmp=resolve_openmp(openmp), projects="restricted")
     fp = fingerprint(release, options)
     cache = default_cache_dir()
     values = {
