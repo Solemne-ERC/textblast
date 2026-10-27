@@ -1,0 +1,113 @@
+# An example configuration with every option and its default. Copy it and adapt input and run_dir.
+# textblast run --config configs/example.yaml     (prepare → plan → blast → merge → post → export)
+# or step by step: prepare / plan --config …, blast / merge --run-dir runs/example, then post / export
+# (--config or --run-dir) and inspect --run-dir runs/example
+# Every option can also be given on the command line, e.g. --normalize.profile latin.
+
+input: corpus.jsonl               # JSONL or JSONL.gz: doc_id, text, metadata…
+run_dir: runs/example             # outputs: corpus/ (the store), logs/, manifest.json, config.yaml
+workers: null                     # default: performance cores
+
+ingest:
+  locs_field: locs                # units in passim format [{loc, start, length}]
+  exclusions_field: exclusions    # classified spans [{start, length, mode, reason}], if present
+  exclusions_file: null           # or a JSONL file with doc_id, start, end, mode, reason
+
+normalize:
+  profile: latin-broad            # latin-broad | latin | latin-broad-frozen (earlier table) | compat-eng | compat-fin
+  declared_gaps: true             # [...], [lacuna], …, page scaffolding → barriers
+  high_deletion_share: 0.12       # warn when more of a document is removed (whitespace, punctuation, h… excluded)
+  pattern_rules: []               # e.g.
+  #  - pattern: '\[fol\.?\s*\d+[rv]?\]'
+  #    action: delete              # delete | mask | barrier
+  #    reason: folio_marker
+  #    where: {source_type: transcription}
+  steps: null                     # override the profile's steps, e.g. latin-broad plus an extra character rule:
+  #  [spans, {name: graphemes, params: {char_map: {"ð": "d"}}}, fold_jv, fold_wy, fold_kc, delete_h, vowel_pairs,
+  #   ci_vowel]
+  #  custom steps: {class_path: mypackage.MyStep, init_args: {...}} (a textblast.normalize.Step subclass)
+
+encode:
+  barrier_length: 100             # X letters per barrier (holds under -comp_based_stats 0 and 2)
+
+blast:                            # BLAST settings (prepare ignores this section)
+  preset: textblast               # textblast (cbs 0, evalue 1e-3) | textreuse-blast (cbs 2) | comhis (1e-9)
+  evalue: null                    # unset values come from the preset
+  word_size: null                 # 6
+  threshold: null                 # 400
+  window_size: null               # 40; 0 = one-hit seeding
+  comp_based_stats: null          # from the preset; 0 (uniform scoring) | 2 (re-aligns with BLOSUM62) | 1 | 3
+  xdrop_ungap: null
+  xdrop_gap: null
+  xdrop_gap_final: null
+  searchsp: null                  # fixed search space (e-values independent of document length)
+  max_target_seqs: null           # default: every sequence of the job's database
+  workers: null                   # parallel jobs (default: performance cores)
+  threads_per_worker: 1
+  block_letters: null             # default: about 10 jobs per worker
+  group_blocks_by: null           # order documents by a field before blocking (helps a pair filter skip jobs)
+  btop: true                      # keep BLAST's alignment transcript
+  keep_raw: false                 # keep BLAST's tabular output in blast/jobs/
+  # The patched matrix (passed as -matrix BLOSUM62) and the gap costs 3/11 are fixed and cannot be set.
+
+engine:
+  version: "2.17.0"               # 2.17.0 | 2.13.0 (reference)
+  blast_bin: null                 # a directory with blastp, makeblastdb, blastdbcmd (default: the managed build)
+  force: false                    # run even if the engine's last check failed
+
+filters:                          # nothing is filtered by default (recall is paramount)
+  series_field: null              # opt-in, e.g. series: skip pairs within one value of this field (deletes; BLAST
+                                  #   skips the jobs)
+  pair_filter: null               # opt-in, document metadata only (field / field2), deletes,
+                                  #   e.g. "abs(date - date2) <= 300"
+  hit_filter: null                # selects what goes into exports and tables/pairs_filtered; never deletes,
+                                  #   e.g. "length >= 50"; fields: hit columns, piece1/2, num_orig_links,
+                                  #   masked_share1/2, doc_degree1/2, ref_overlap_<set>1/2, piece_letters1/2,
+                                  #   metadata (field / field2). Named filters: @no_formulae (a side with
+                                  #   doc_degree >= 30 and under 60 letters), @no_bible_mediated (both sides >= 80%
+                                  #   covered by Bible hits); e.g. "@no_formulae AND length >= 50"
+
+units:
+  clip: false                     # also write tables/hsps_clipped.parquet: hits cut at the unit boundaries they cross
+
+join:                             # neighbouring hits of a pair: tables/join_map (always) and the joined view
+  enabled: false                  # off: raw hits stay the unit; true also builds tables/hsps_joined
+  gap: 500                        # letters, in both documents (about 600 characters)
+  max_overlap: 0.5                # repeat guard: no joint if the hits overlap by more than half of the shorter one
+                                  #   in either document (one phrase matched twice); null = off
+  max_drift: null                 # off: |gap1 - gap2| is not limited
+  min_gap_ratio: null             # off; e.g. 0.6: the shorter gap must be ≥ 0.6 × the longer (insertion guard)
+
+defrag:
+  rule: etl                       # etl (ReceptionReader) | node_similarity | node_similarity-compat | passim |
+                                  #   module:function
+  node_similarity: 0.9            # threshold of the node_similarity rules
+  src_overlap: 0.9                # passim: spans of the same role
+  dst_overlap: 0.5                # passim: a span where the document is doc1 and one where it is doc2
+  view: hsps                      # hsps | clipped (needs units.clip) | joined (needs join.enabled)
+
+annotate:
+  reference_sets: {}              # per piece ref_overlap_<name>: share covered by hits with documents of the set,
+                                  #   e.g. {bible: "doc_id LIKE 'bible:%'"} (needed by @no_bible_mediated)
+
+cluster:
+  enabled: false                  # off by default; true writes tables/clusters and cluster_summary
+  method: chinese_whispers        # chinese_whispers | components | module:function
+  weight: total_length            # chinese_whispers: total_length | num_orig_links | score | none
+  iterations: 50                  # chinese_whispers: the most rounds (stops when no label changes)
+  batches: 10                     # chinese_whispers: random batches per iteration
+  seed: 0                         # chinese_whispers
+  filtered: false                 # cluster only the pairs that pass the hit filter (tables/pairs_filtered)
+
+export:
+  formats: []                     # written by `run` (e.g. [pairs_flat, bundle]); `export --format` writes any of
+                                  #   bundle | pairs_flat | passim-pairwise | etl | passim-clusters
+  excerpts: surface               # surface | none (text in pairs_flat, etl, passim-pairwise)
+  offsets: codepoints             # codepoints | utf16 (for JavaScript)
+  fields: null                    # document metadata to carry (default: all input metadata, e.g. date, series)
+  file_format: parquet            # pairs_flat: parquet | csv | jsonl
+  view: null                      # hits for etl / passim-pairwise: hsps | clipped | joined (default: defrag.view)
+  texts: true                     # bundle: include the texts
+  boiler_field: null              # passim-clusters: pboiler = share of links within one value (passim's gid)
+  out_dir: null                   # default: <run_dir>/exports
+  converters: {}                  # custom formats: {name: "module:function"}

@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Run outputs and engine builds, if created inside the repository
+runs/
+engine/_build/
+
+# Private and local: data, development documents, third-party references, tool settings
+data/
+dev/
+docs/reference/
+CLAUDE.md
+.claude/
+.idea/
+.DS_Store
