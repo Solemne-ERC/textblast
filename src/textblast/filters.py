@@ -167,6 +167,15 @@ def apply_hit_filter(frame: pl.LazyFrame, expression: str | None, documents: pl.
     columns = frame.collect_schema().names()
     enriched = with_metadata(frame, documents)
     try:
-        return enriched.filter(pl.sql_expr(sql).fill_null(False)).select(columns)
+        condition = pl.sql_expr(sql)
     except Exception as error:
         raise FilterError(f"hit filter {expression!r} failed: {error}") from error
+    available = set(enriched.collect_schema().names())
+    missing = [name for name in condition.meta.root_names() if name not in available]
+    if missing:  # caught here: the frame is lazy, so Polars would only fail later, deep in the query
+        hint = ""
+        sets = sorted({m.removeprefix("ref_overlap_")[:-1] for m in missing if m.startswith("ref_overlap_")})
+        if sets:
+            hint = f"; add the reference set{'s' * (len(sets) > 1)} {', '.join(sets)} to annotate.reference_sets"
+        raise FilterError(f"hit filter {expression!r} uses unknown columns: {', '.join(missing)}{hint}")
+    return enriched.filter(condition.fill_null(False)).select(columns)

@@ -92,6 +92,11 @@ def test_named_filters() -> None:
     assert kept["hsp_id"].to_list() == [1, 3]
     both = apply_hit_filter(rows.lazy(), "@no_formulae AND @no_bible_mediated", DOCS).collect()
     assert both["hsp_id"].to_list() == [3]  # 1 is mediated by the Bible on both sides
+    # without the reference set, the error names the setting (not a failure deep in the lazy query)
+    with pytest.raises(FilterError, match="ref_overlap_bible1.*add the reference set bible to annotate"):
+        apply_hit_filter(rows.drop("ref_overlap_bible1", "ref_overlap_bible2").lazy(), "@no_bible_mediated", DOCS)
+    with pytest.raises(FilterError, match="unknown columns: lenght"):
+        apply_hit_filter(rows.lazy(), "lenght > 5", DOCS)
 
 
 # --------------------------------------------------------------------------- the ETL rule
