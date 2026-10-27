@@ -164,7 +164,7 @@ class SpanRules(Step):
 # --------------------------------------------------------------------------- graphemes
 
 # Combining marks that are plain accents (stripped). Others (tilde, macron, overline, ...) usually mark abbreviations
-# in medieval texts: the grapheme is removed and counted as unresolved_abbreviation_mark (normalization.md).
+# in medieval texts: the grapheme is removed and counted as unresolved_abbreviation_mark.
 SUPPORTED_MARKS = frozenset(
     chr(c) for c in (0x0300, 0x0301, 0x0302, 0x0306, 0x0307, 0x0308, 0x030A, 0x030B, 0x030C, 0x0327, 0x0328)
 )
@@ -222,7 +222,7 @@ def classify_char(ch: str, char_map: Mapping[str, str]) -> tuple[int, str, str |
 
 
 class Graphemes(Step):
-    """Case folding, Unicode decomposition and the shared character rules of ``normalization.md``.
+    """Case folding, Unicode decomposition and the character rules shared by the Latin profiles.
 
     - letters: casefold, NFKD, plain accents stripped; ``æ → ae``, ``œ → oe``, ``ſ → s``, ``ę → ae``, ligatures split;
     - a letter carrying an unresolved mark (tilde, macron, ...) is removed with its marks

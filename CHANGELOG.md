@@ -25,3 +25,5 @@ The first public release.
 - **Outputs:** Parquet tables, a portable bundle, and exports to `pairs_flat`, passim's pairwise and cluster
   records, and the ETL/ReceptionReader format; a Python API (`open_run`) with excerpts and UTF-16 offsets.
 - **Evaluation:** recall against expected pairs (`textblast evaluate`), by kind, length and similarity.
+- **Documentation:** a user guide (`docs/guide/`), an example configuration with every option, and a quickstart on
+  a small invented corpus (`examples/quickstart/`).

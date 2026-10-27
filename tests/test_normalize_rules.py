@@ -141,5 +141,5 @@ def test_broad_c_before_i_and_vowel() -> None:
 
 
 def test_reference_example() -> None:
-    """The example of normalization.md: "Hæc & uita" → "ec et uita"."""
+    """A worked example: "Hæc & uita" → "ec et uita"."""
     assert letters("latin-broad", "Hæc & uita") == "ec et uita"
