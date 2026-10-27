@@ -1,4 +1,4 @@
-"""Clustering pieces through their pairs (plan section 8; notes Q37): an optional step of ``post``.
+"""Clustering pieces through their pairs: an optional step of ``post``.
 
 Methods:
 - ``components``: connected components (label propagation with pointer jumping, numpy);

@@ -1,4 +1,4 @@
-"""Logging and progress reporting (plan section 10).
+"""Logging and progress reporting.
 
 The library only ever logs to the ``textblast`` logger; handlers are configured by the CLI via
 :func:`setup_logging`. Console output stays short: numbered stage lines, one progress line, warnings and errors.

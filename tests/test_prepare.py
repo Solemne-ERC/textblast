@@ -98,7 +98,7 @@ def test_warnings_and_manifest(tmp_path: Path, quiet_console: io.StringIO) -> No
     assert set(by_reason["reason"].to_list()) == {"formula", "folio_marker", "declared_gap"}
     manifest = json.loads((run_dir / "manifest.json").read_text())["stages"]["prepare"]
     assert manifest["profile"] == "latin-broad" and manifest["summary"]["documents"] == 3
-    assert manifest["table"]["i"] == "G" and manifest["table"]["a"] == "A"  # the reference order (since M5)
+    assert manifest["table"]["i"] == "G" and manifest["table"]["a"] == "A"  # the established order
     assert (run_dir / "config.yaml").is_file() and (run_dir / "logs" / "run.log").is_file()
     console = quiet_console.getvalue()
     assert "[1/3] ingest" in console and "[3/3] store done" in console
@@ -117,7 +117,7 @@ def test_rerun_is_a_noop_until_something_changes(tmp_path: Path, quiet_console: 
 
 
 def test_store_from_older_code_or_table_is_rebuilt(tmp_path: Path, quiet_console: io.StringIO) -> None:
-    """M5 changed latin-broad's table: a store made before (other code, or the frozen table) is never reused."""
+    """latin-broad's table changed once: a store made before (other code, or the frozen table) is never reused."""
     corpus = write(tmp_path / "c.jsonl", DOCS)
     frozen = config(tmp_path, corpus)
     frozen.normalize.profile = "latin-broad-frozen"

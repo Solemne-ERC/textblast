@@ -1,4 +1,4 @@
-"""Normalization: surface text → letters with exact spans (plan section 6)."""
+"""Normalization: surface text → letters with exact spans."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""The corpus store: encoded letters and their exact maps back to the surface text (plan section 5, notes Q13, Q16).
+"""The corpus store: encoded letters and their exact maps back to the surface text.
 
 Layout of ``<run_dir>/corpus/``:
 

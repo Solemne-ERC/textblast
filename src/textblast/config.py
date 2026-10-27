@@ -1,4 +1,4 @@
-"""Run configuration beyond ``prepare``: BLAST settings and engine choice (plan sections 7 and 10).
+"""Run configuration beyond ``prepare``: BLAST settings and engine choice.
 
 One ``run.yaml`` serves all commands: ``prepare`` reads its own sections and ignores ``blast`` and ``engine``.
 """
@@ -19,16 +19,17 @@ from .prepare import PrepareConfig
 
 # Never configurable: the patched matrix (passed as BLOSUM62) and the only gap costs its statistics were patched for.
 FIXED_ARGS = ("-matrix", "BLOSUM62", "-gapopen", "3", "-gapextend", "11")
-# Always passed: no low-complexity filter; lowercase = masked, seeds only (M0, test 5).
+# Always passed: no low-complexity filter; lowercase = masked, seeds only (engine check 5).
 MASKING_ARGS = ("-seg", "no", "-lcase_masking", "-soft_masking", "true")
 OUTFMT_FIELDS = (
     "qseqid sseqid qstart qend sstart send length nident mismatch gapopen gaps pident ppos score bitscore evalue"
 )
 
 PRESETS: dict[str, dict[str, Any]] = {
-    # the default (decided after M4; notes, "Defaults after M4"): textreuse-blast's values with -comp_based_stats 0
+    # the default: textreuse-blast's values with -comp_based_stats 0 (no composition-based re-alignment, which can
+    # bridge masked barriers and makes results depend on the letter table)
     "textblast": {"word_size": 6, "threshold": 400, "evalue": 1e-3, "window_size": 40, "comp_based_stats": 0},
-    # textreuse-blast's settings, kept for parity (plan section 7, questions A and B)
+    # textreuse-blast's settings, kept for parity
     "textreuse-blast": {"word_size": 6, "threshold": 400, "evalue": 1e-3, "window_size": 40, "comp_based_stats": 2},
     # the COMHIS / ReceptionReader production runs (blast_ecco)
     "comhis": {"word_size": 6, "threshold": 400, "evalue": 1e-9, "window_size": 40, "comp_based_stats": 2,

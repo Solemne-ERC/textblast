@@ -118,7 +118,7 @@ def test_run_finds_shared_passage_and_resumes(engine, tmp_path: Path) -> None:
 
 
 def test_databases_follow_the_corpus_store(engine, tmp_path: Path) -> None:
-    """A store rebuilt with another letter table must not search the old databases (M5: 0 hits otherwise)."""
+    """A store rebuilt with another letter table must not search the old databases (0 hits otherwise)."""
     from textblast.prepare import NormalizeOptions
 
     logs.setup_logging(stream=io.StringIO())

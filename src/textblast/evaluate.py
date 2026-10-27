@@ -1,5 +1,4 @@
-"""Recall against expected pairs: ``textblast evaluate`` (plan section 11; notes, "Benchmark from editorial
-references (before M4)").
+"""Recall against expected pairs: ``textblast evaluate``.
 
 Generic: expected pairs name documents by ``doc_id`` and give spans in code points of the input text, so one file
 serves every run of the same input. Format (Parquet; README, "Evaluating against expected pairs"):

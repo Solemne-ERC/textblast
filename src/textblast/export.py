@@ -1,4 +1,4 @@
-"""``textblast export``: a portable bundle and converters to other formats (notes, "Exports (before M3)").
+"""``textblast export``: a portable bundle and converters to other formats.
 
 The core tables are the native format. Converters derive other formats from them; each declares the tables it needs
 and refuses with a clear message when one is missing. Custom converters plug in by import path. All exports use the
@@ -438,7 +438,7 @@ def merge_spans(start: np.ndarray, end: np.ndarray) -> tuple[np.ndarray, np.ndar
 def export_passim_clusters(ctx: Context) -> tuple[Path, int]:
     """passim's cluster output (``out.json``): one record per passage of a cluster, i.e. the cluster's pieces in one
     document merged where they overlap (passim's ``mergeSpans``). ``size`` is the number of documents in the cluster,
-    as in passim. passim's ``src`` is left out (B is undirected, Q34). ``pboiler`` is the share of the cluster's links
+    as in passim. passim's ``src`` is left out (pairs are undirected). ``pboiler`` is the share of the cluster's links
     whose two documents have the same value of ``export.boiler_field`` (passim's ``gid``), when it is set."""
     clusters = ctx.run.clusters.collect()
     pieces = ctx.run.pieces.select("piece_id", "doc", "start", "end").collect()

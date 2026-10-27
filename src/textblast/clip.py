@@ -1,4 +1,4 @@
-"""Unit clipping: raw hits cut at every unit boundary they cross on either side (plan section 8; round 4).
+"""Unit clipping: raw hits cut at every unit boundary they cross on either side .
 
 ``tables/hsps_clipped.parquet`` is an additional view; ``hsps`` is never changed. A hit is cut on its alignment
 (``btop``): a new segment starts at the column whose letter, on either side, lies in another unit stretch than the

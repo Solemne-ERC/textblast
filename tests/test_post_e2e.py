@@ -1,4 +1,4 @@
-"""M3 end to end on a synthetic corpus with units, series and a repeated passage (marker ``engine``)."""
+"""Post-processing end to end on a synthetic corpus with units, series and a repeated passage (marker ``engine``)."""
 
 from __future__ import annotations
 
@@ -174,7 +174,7 @@ def test_pair_filter_skips_jobs_and_equals_filtering_afterwards(engine, tmp_path
 
 
 def test_joining_annotations_clusters_and_exports(engine, tmp_path: Path) -> None:
-    """A passage split by an insertion in one document is joined; annotations, clusters and the M5 exports."""
+    """A passage split by an insertion in one document is joined; annotations, clusters and the exports."""
     from textblast.api import open_run
     from textblast.cluster import ClusterOptions
     from textblast.evaluate import EvaluateOptions, evaluate

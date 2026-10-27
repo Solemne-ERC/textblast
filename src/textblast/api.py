@@ -1,4 +1,4 @@
-"""Python API: ``open_run(path)`` → :class:`Run`, a thin reader over a run directory or a bundle (Q35/Q36).
+"""Python API: ``open_run(path)`` → :class:`Run`, a thin reader over a run directory or a bundle.
 
 Files are the interface: tables come back as Polars LazyFrames, nothing is recomputed, and nothing is held besides
 lazily loaded texts. A bundle (``textblast export --format bundle``) has the core tables and optionally the texts,
@@ -45,7 +45,7 @@ class Run:
         if not path.is_file():
             hint = {"hsps_clipped": " (set units.clip: true and run `post`)",
                     "hsps_joined": " (set join.enabled: true and run `post`)",
-                    "join_map": " (run `post`; every run since M6 writes it)",
+                    "join_map": " (run `post` again: this version writes it on every run)",
                     "clusters": " (set cluster.enabled: true and run `post`)",
                     "cluster_summary": " (set cluster.enabled: true and run `post`)",
                     "pairs_filtered": " (set filters.hit_filter and run `post`)",

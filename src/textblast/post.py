@@ -1,5 +1,5 @@
 """``textblast post``: clip (optional) → join (optional) → defragment → annotate → hit filter → cluster
-(optional) (plan section 8).
+(optional).
 
 Inputs: ``tables/hsps.parquet`` (from ``merge``) and the corpus store. Outputs in ``tables/``: ``pieces``,
 ``piece_map``, ``pairs``, ``unit_overlaps``, ``join_map`` (which raw hits continue each other; always), optionally
@@ -7,7 +7,7 @@ Inputs: ``tables/hsps.parquet`` (from ``merge``) and the corpus store. Outputs i
 skipped when its inputs and settings are unchanged.
 
 Pieces are annotated with ``masked_share``, ``doc_degree`` (distinct partner documents) and ``ref_overlap_<name>``
-for each reference set (share of the piece covered by hits with documents of the set; Q29).
+for each reference set (share of the piece covered by hits with documents of the set).
 
 The **hit filter** is evaluated on hit rows (the view being defragmented): every hit field, plus ``piece1``,
 ``piece2``, ``num_orig_links`` (of the hit's pair), the piece annotations of both sides (``masked_share1``,
@@ -51,7 +51,7 @@ from .sysinfo import default_workers
 log = get_logger("post")
 
 TABLES = Path("tables")
-SCHEMAS = {  # table → schema version (plan section 9: files are the contract)
+SCHEMAS = {  # table → schema version (the files are the interface for readers)
     "documents": 1, "hsps": 1, "hsps_clipped": 1, "hsps_joined": 1, "join_map": 2, "pieces": 2, "piece_map": 1,
     "pairs": 1, "pairs_filtered": 1, "unit_overlaps": 1, "units": 1, "texts": 1, "clusters": 1,
     "cluster_summary": 1,

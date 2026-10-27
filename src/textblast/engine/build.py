@@ -1,4 +1,4 @@
-"""Build the patched BLAST engine from NCBI's official source (plan section 4).
+"""Build the patched BLAST engine from NCBI's official source.
 
 Stages: download → verify → extract → patch → configure → make → install. configure/make output goes only to
 ``build.log``; the console shows stage lines and progress. The result is installed into

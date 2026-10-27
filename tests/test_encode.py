@@ -38,7 +38,7 @@ def test_all_profiles_have_valid_tables() -> None:
     assert set(get_profile("latin-broad").table) == set("abcdefgilmnopqrstuxz")
     assert set(get_profile("latin").table) == set("abcdefghilmnopqrstuxz")
     assert set(LATIN_BROAD_REFTABLE) == set(get_profile("latin-broad").table)
-    # since M5 latin-broad uses the reference order; the M1–M4 table stays, unchanged, as latin-broad-frozen
+    # latin-broad uses the established order; the earlier table stays, unchanged, as latin-broad-frozen
     assert dict(get_profile("latin-broad").table) == LATIN_BROAD_REFTABLE
     assert dict(get_profile("latin-broad-frozen").table) == {
         "i": "A", "e": "G", "u": "N", "t": "F", "s": "P", "a": "Y", "n": "H", "r": "C", "o": "W",

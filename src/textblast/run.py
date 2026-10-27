@@ -1,4 +1,4 @@
-"""``textblast blast``, ``run-job``, ``merge``, ``inspect`` and ``run`` (plan sections 7, 9 and 10).
+"""``textblast blast``, ``run-job``, ``merge``, ``inspect`` and ``run``.
 
 Each job writes ``blast/jobs/job_<hash>.parquet`` (parsed, mapped hits) and a small status file next to it, both
 atomically. The hash covers only the job's own inputs (see :mod:`textblast.plan`), so a rerun skips finished work
@@ -75,7 +75,7 @@ def job_states(run_dir: Path, plan_body: dict[str, Any]) -> dict[int, dict[str, 
     """Status of every planned job: done (current hash, results present), failed, or missing."""
     states: dict[int, dict[str, Any]] = {}
     for job in plan_body["jobs"]:
-        if "hash" not in job:  # a plan written before job hashes (M2): nothing can be matched
+        if "hash" not in job:  # a plan written before jobs had hashes: nothing can be matched
             states[job["job_id"]] = {"status": "missing"}
             continue
         parquet, status_file = _job_files(run_dir, job)
@@ -112,7 +112,7 @@ def write_fasta(path: Path, docs: list[int], store: CorpusStore) -> None:
 def ensure_database(run_dir: Path, plan_body: dict[str, Any], name: str, store: CorpusStore) -> Path:
     """Build the named database unless it already exists for the same documents, corpus store and engine; returns
     its prefix. The store's fingerprint matters: a store rebuilt with another letter table encodes the same documents
-    differently (found in M5, when ``latin-broad`` changed its table)."""
+    differently (as when ``latin-broad`` changed its table)."""
     spec = next(d for d in plan_body["databases"] if d["name"] == name)
     marker_value = hashlib.sha256(
         json.dumps([spec["docs"], plan_body["engine"]["fingerprint"], plan_body["corpus_fingerprint"]]).encode()

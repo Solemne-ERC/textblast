@@ -1,8 +1,8 @@
-"""Defragmentation: hit sides → pieces (passages per document) → pairs of pieces (plan sections 8, 9; Q26–Q28).
+"""Defragmentation: hit sides → pieces (passages per document) → pairs of pieces .
 
 Raw pieces are the distinct ``(doc, start, end)`` of the hit sides. A rule groups the raw pieces of each document;
 a merged piece spans its group. Pairs link the pieces of the two sides of each hit; ``num_orig_links`` counts the
-hits behind a pair. Every rule works on surface offsets (notes, "Defragmentation coordinates (before M3)").
+hits behind a pair. Every rule works on surface offsets.
 
 Presets:
 - ``etl``: ReceptionReader's rule (HPC-HD ETL, ``piece_id_mappings.ipynb``), reproduced exactly;

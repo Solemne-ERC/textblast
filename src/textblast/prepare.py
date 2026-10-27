@@ -1,4 +1,4 @@
-"""``textblast prepare``: ingest → normalize → encode → corpus store (plan sections 2, 5, 6; M1).
+"""``textblast prepare``: ingest → normalize → encode → corpus store.
 
 Work is spread over worker processes in batches balanced by character count; workers write their arrays to files,
 and the main process assembles the store. A rerun with unchanged input, configuration and code does nothing.
@@ -87,7 +87,7 @@ class NormalizeOptions:
 
 @dataclass
 class EncodeOptions:
-    barrier_length: int = BARRIER_LENGTH  # X letters per barrier (see docs/reports/m0_engine.md)
+    barrier_length: int = BARRIER_LENGTH  # X letters per barrier (see engine check 4)
 
 
 @dataclass
@@ -624,7 +624,7 @@ def suggest_alphabet(
     exclusions_field: str = "exclusions",
     workers: int | None = None,
 ) -> tuple[Counter[str], EncodingTable]:
-    """Letter frequencies after normalization with ``profile_name``, and the table they suggest (notes Q10)."""
+    """Letter frequencies after normalization with ``profile_name``, and the table they suggest."""
     profile = get_profile(profile_name)
     corpus = load_corpus(input_path, locs_field, exclusions_field)
     documents = corpus.documents

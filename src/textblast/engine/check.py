@@ -1,4 +1,4 @@
-"""Engine tests on tiny synthetic sequences (plan section 4; notes findings 7–9, Q14).
+"""Engine tests on tiny synthetic sequences.
 
 Every test runs ``blastp -query a.fsa -subject b.fsa`` (no database) with the fixed text-reuse settings. Sequences
 that must be unrelated are verified to share no seed word in BLAST's 15-group seed alphabet, so a test cannot pass or
@@ -38,7 +38,7 @@ MASK_FLAGS: dict[str, list[str]] = {
     "-lcase_masking": ["-lcase_masking"],
     "(no masking flags)": [],
 }
-# Barrier length agreed in round 4: 20 X letters are bridged under -comp_based_stats 2 (X/X costs about -1 in the
+# Barrier length: 20 X letters are bridged under -comp_based_stats 2 (X/X costs about -1 in the
 # re-alignment matrix instead of -5); from about 80 they hold with BLAST's default x-drop settings.
 BARRIER_LENGTH = 100
 BARRIER_SWEEP = (20, 40, 60, 80, 100)
@@ -293,7 +293,7 @@ def check_barrier(runner: Runner, length: int = BARRIER_LENGTH) -> TestResult:
 
 
 def verify_barrier(engine: Engine, length: int, blast_args: Iterable[str], complete: bool = False) -> bool:
-    """Does an X run of ``length`` hold with these BLAST arguments? (pre-run check, plan section 7).
+    """Does an X run of ``length`` hold with these BLAST arguments? (checked before a run).
 
     ``complete``: ``blast_args`` are a run's full argument list (matrix, gap costs, seeding, e-value, ``-dbsize``…),
     used exactly as given; otherwise they are added to the engine tests' defaults (word size 6, threshold 400).
@@ -353,7 +353,7 @@ def check_mask(runner: Runner) -> TestResult:
 
 
 def report_composition_stats(runner: Runner) -> TestResult:
-    """6. Report only: two identical 100-letter blocks separated by 30 substituted letters (finding 7)."""
+    """6. Report only: two identical 100-letter blocks separated by 30 substituted letters."""
     seqs = Sequences(6)
     block_a = seqs.random(100)
     block_b = seqs.unrelated(100, block_a)

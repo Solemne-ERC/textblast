@@ -41,5 +41,5 @@ def test_barrier_check_with_a_runs_complete_arguments(engine) -> None:
         settings = resolved_settings(BlastOptions(preset=preset))
         args = blast_arguments(settings, btop=True, dbsize=40_000_000)
         assert verify_barrier(engine, BARRIER_LENGTH, args, complete=True)
-        # a short barrier is bridged only by the re-alignment of comp_based_stats 2 (M0, round 4)
+        # a short barrier is bridged only by the re-alignment of comp_based_stats 2 (engine check 4)
         assert verify_barrier(engine, 20, args, complete=True) == (settings["comp_based_stats"] == 0)
