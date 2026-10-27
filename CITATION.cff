@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "textblast: text reuse detection with a patched NCBI BLAST engine"
+version: 0.9.0
+license: MIT
+repository-code: "https://github.com/Solemne-ERC/textblast"
+abstract: >-
+  textblast detects text reuse in historical document collections. It normalizes and encodes texts as protein-like
+  sequences, aligns them with NCBI BLAST+ patched for text (a uniform match/mismatch matrix and matching gap costs),
+  and maps every hit back to exact character offsets of the input. It then joins, defragments, annotates, filters and
+  clusters the hits, and exports tables and formats for analysis. It works on any collection of texts in the Latin
+  script, given as JSON Lines.
+authors:
+  - family-names: Schmidt
+    given-names: Gleb
+    orcid: "https://orcid.org/0000-0001-6925-551X"
+    affiliation: "Radboud University, Faculty of Arts, Humanities Lab"
+keywords:
+  - text reuse
+  - intertextuality
+  - sequence alignment
+  - BLAST
+  - historical texts
+  - Latin
+  - digital humanities
+  - computational philology
