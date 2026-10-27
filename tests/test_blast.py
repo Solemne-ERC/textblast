@@ -75,6 +75,8 @@ def test_run_finds_shared_passage_and_resumes(engine, tmp_path: Path) -> None:
     run_dir = Path(cfg.run_dir)
     plan_body = load_plan(run_dir)
     assert {j["kind"] for j in plan_body["jobs"]} == {"blocks", "halves"}
+    states = job_states(run_dir, plan_body).values()  # time in blastp is recorded apart from parsing
+    assert all(0 < s["blastp_seconds"] <= s["seconds"] for s in states)
 
     planned = {d for j in plan_body["jobs"] for d in j["query"]} | {d for b in plan_body["blocks"] for d in b}
     assert 8 not in planned  # the empty document
