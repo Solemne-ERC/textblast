@@ -424,6 +424,12 @@ def run_checks(engine: Engine, cache: Path | None = None, record: bool = True) -
 
 
 def _record(engine: Engine, report: CheckReport) -> None:
+    if engine.check_path is not None:  # bundled engine: the results go to the cache, not into the package
+        record = {"bin_dir": str(engine.bin_dir.resolve()), "fingerprint": engine.fingerprint,
+                  "last_check": report.to_dict()}
+        write_json(engine.check_path, record)
+        engine.info = {**engine.info, "last_check": record["last_check"]}
+        return
     if engine.info_path is None:
         return
     info = read_json(engine.info_path) if engine.info_path.is_file() else dict(engine.info)

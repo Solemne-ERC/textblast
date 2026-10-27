@@ -427,6 +427,7 @@ def run_all(config: RunConfig) -> Path:
     from .post import post
 
     run_dir = Path(config.run_dir).expanduser()
+    find_engine(config.engine.blast_bin, config.engine.version)  # no engine: say so before `prepare`, not after it
     prepare(prepare_part(config))
     plan(config)
     blast(run_dir, config.blast.workers, config.engine.force)

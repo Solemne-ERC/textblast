@@ -25,7 +25,16 @@ from typing import Any
 
 from .. import __version__
 from ..logs import Stage, format_bytes, format_count, format_duration, get_logger
-from .locate import EngineError, blastp_version, default_cache_dir, engines_dir, verify_managed, write_json
+from .locate import (
+    EngineError,
+    blastp_version,
+    bundled_engine_dir,
+    default_cache_dir,
+    engines_dir,
+    read_json,
+    verify_managed,
+    write_json,
+)
 from .patches import PATCHES, apply_patches
 from .versions import BINARIES, DEFAULT_VERSION, PATCHSET, BlastRelease, get_release
 
@@ -218,6 +227,7 @@ def build_engine(
             log.warning(f"existing engine at {engine_dir} is incomplete ({error}); rebuilding")
         else:
             log.info(f"engine already built at {engine_dir}; nothing to do (use --force to rebuild)")
+            _note_bundle(release.version, engine_dir)
             return engine_dir
 
     started = time.monotonic()
@@ -308,6 +318,9 @@ def build_engine(
                 "jobs": jobs,
                 "compiler": _compiler_version(),
                 "system": f"{platform.system()} {platform.release()} {platform.machine()}",
+                # The oldest macOS the binaries run on (clang reads it from the environment); None: this machine's.
+                "macosx_deployment_target": os.environ.get("MACOSX_DEPLOYMENT_TARGET") if sys.platform == "darwin"
+                else None,
                 "built_by": f"textblast {__version__}",
                 "built_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                 "build_seconds": round(time.monotonic() - started, 1),
@@ -325,4 +338,14 @@ def build_engine(
     if not keep_build:
         shutil.rmtree(build_dir, ignore_errors=True)
     log.info(f"engine built in {format_duration(time.monotonic() - started)}: {engine_dir}")
+    _note_bundle(release.version, engine_dir)
     return engine_dir
+
+
+def _note_bundle(version: str, engine_dir: Path) -> None:
+    """Say so when this installation bundles an engine of the same version, since that one is found first."""
+    bundle = bundled_engine_dir()
+    if bundle is None or read_json(bundle / "engine.json").get("version") != version:
+        return
+    log.info(f"this installation bundles its own BLAST {version} engine, which is used before the cache; to use "
+             f"this build instead, pass --blast-bin {engine_dir / 'bin'}")
