@@ -16,5 +16,6 @@ The texts in this folder are copied unchanged from the BLAST+ 2.17.0 source dist
 | BitMagic | compiled into the programs | Apache-2.0 | `BitMagic-NOTICE.txt`, `Apache-2.0.txt` |
 | zlib | Linux wheel: a copy of the library is included; macOS: the system's | zlib licence | `zlib.txt` |
 | bzip2 (libbzip2) | Linux wheel: a copy of the library is included; macOS: the system's | bzip2 licence (BSD-style) | `bzip2.txt` |
+| SQLite | Linux wheel: a copy of the library is included; macOS: the system's | public domain | (none required) |
 
 On macOS the programs use only libraries that are part of the operating system.
