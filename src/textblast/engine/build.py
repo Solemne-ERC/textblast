@@ -165,6 +165,24 @@ def _download(release: BlastRelease, target: Path, stage: Stage) -> None:
     stage.summary = format_bytes(target.stat().st_size)
 
 
+# Development packages that provide a library BLAST's programs require, as named by configure's status files.
+_REQUIREMENT_PACKAGES = {"SQLITE3": "sqlite-devel or libsqlite3-dev", "Z": "zlib-devel or zlib1g-dev",
+                         "BZ2": "bzip2-devel or libbz2-dev"}
+_UNMET = re.compile(r"No rule to make target '[^']*/status/(\w+)\.enabled'")
+
+
+def _unmet_requirements(log_path: Path) -> str:
+    """Why make skipped projects: the libraries configure did not find, with the packages that provide them."""
+    try:
+        names = sorted(set(_UNMET.findall(log_path.read_text(encoding="utf-8", errors="replace"))))
+    except OSError:
+        return ""
+    if not names:
+        return ""
+    hints = [f"{n} ({_REQUIREMENT_PACKAGES[n]})" if n in _REQUIREMENT_PACKAGES else n for n in names]
+    return f"; configure did not find {', '.join(hints)}: install the development package and build again"
+
+
 def _project_list(cpp_dir: Path, build_dir: Path) -> Path:
     """NCBI's BLAST project list without unit tests and stand-alone masker programs."""
     source = cpp_dir / "scripts/projects/blast/project.lst"
@@ -284,7 +302,8 @@ def build_engine(
         _run_logged(["make", f"-j{jobs}", target], build_root / "build", log_path, stage, estimate, "files")
         missing = [name for name in BINARIES if not (build_root / "bin" / name).is_file()]
         if missing:
-            raise BuildError(f"make finished but these binaries are missing: {', '.join(missing)}", log_path)
+            raise BuildError(f"make finished but these binaries are missing: {', '.join(missing)}"
+                             f"{_unmet_requirements(log_path)}", log_path)
 
     with Stage(7, N_STAGES, "install", log=log) as stage:
         if engine_dir.exists():

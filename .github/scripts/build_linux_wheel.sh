@@ -11,6 +11,8 @@ PLAT="${PLAT:-manylinux_2_28_x86_64}"
 OPENMP="${WHEEL_OPENMP:-auto}"
 PYTHON=/opt/python/cp312-cp312/bin/python
 
+# BLAST's database programs require SQLite; zlib and bzip2 come from the system as on the other platforms.
+dnf install -y -q sqlite-devel zlib-devel bzip2-devel
 echo "== $(gcc --version | head -1) · $(ldd --version | head -1) · auditwheel $(auditwheel --version)"
 "$PYTHON" -m venv /tmp/venv
 /tmp/venv/bin/pip install --quiet /io

@@ -13,6 +13,7 @@ from textblast.engine.build import (
     BuildError,
     BuildOptions,
     _project_list,
+    _unmet_requirements,
     fingerprint,
     resolve_openmp,
 )
@@ -67,6 +68,16 @@ def test_build_error_log_tail(tmp_path: Path) -> None:
     log.write_text("".join(f"line {i}\n" for i in range(100)))
     tail = BuildError("make failed", log).log_tail()
     assert len(tail) == 40 and tail[-1] == "line 99"
+
+
+def test_unmet_requirements_name_the_missing_library(tmp_path: Path) -> None:
+    log = tmp_path / "build.log"
+    line = "make[4]: *** No rule to make target '/b/ReleaseMT/status/{}.enabled', needed by 'requirements'.  Stop.\n"
+    log.write_text(line.format("SQLITE3") * 3 + line.format("LIBFOO") + "NOTE:  skipping project \"blastp\"\n")
+    message = _unmet_requirements(log)
+    assert "SQLITE3 (sqlite-devel or libsqlite3-dev)" in message and "LIBFOO" in message
+    log.write_text("all fine\n")
+    assert _unmet_requirements(log) == "" and _unmet_requirements(tmp_path / "missing.log") == ""
 
 
 def test_cli_help_and_version(capsys: pytest.CaptureFixture[str]) -> None:
