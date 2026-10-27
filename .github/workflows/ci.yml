@@ -1,0 +1,113 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # Never cancel a run on main: it is the one that fills the engine cache for every branch.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+env:
+  PYTHONUNBUFFERED: "1"
+
+jobs:
+  lint:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - run: python -m pip install ruff
+      - run: ruff check
+
+  # Build the patched BLAST engine once per platform, or restore it from the cache. The cache key is the engine
+  # fingerprint, so a hit skips the build entirely (it takes 30 minutes or more on a hosted runner).
+  engine:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Install textblast
+        run: python -m pip install .
+      - name: Engine fingerprint
+        id: key
+        run: python .github/scripts/engine_key.py
+      - name: Restore the engine
+        id: cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ steps.key.outputs.engine_dir }}
+            ${{ steps.key.outputs.tarball }}
+          key: ${{ matrix.os }}-${{ steps.key.outputs.key }}
+      - name: Build the engine
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: textblast engine build
+      - name: Save the engine
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{ steps.key.outputs.engine_dir }}
+            ${{ steps.key.outputs.tarball }}
+          key: ${{ matrix.os }}-${{ steps.key.outputs.key }}
+      - name: Upload the build log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log-${{ matrix.os }}
+          path: ${{ steps.key.outputs.build_dir }}/*/build.log
+          if-no-files-found: ignore
+      - name: Engine check
+        run: textblast engine check
+      - name: Engine info
+        run: textblast engine info
+
+  # The tests, with the engine restored from the cache, so the engine tests run instead of being skipped. Tests that
+  # need the reference engine (BLAST 2.13.0) or private data skip themselves.
+  tests:
+    needs: engine
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15]
+        python: ["3.10", "3.14"]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install textblast
+        run: python -m pip install -e '.[dev]'
+      - name: Engine fingerprint
+        id: key
+        run: python .github/scripts/engine_key.py
+      - name: Restore the engine
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ steps.key.outputs.engine_dir }}
+            ${{ steps.key.outputs.tarball }}
+          key: ${{ matrix.os }}-${{ steps.key.outputs.key }}
+          fail-on-cache-miss: true
+      - name: Engine info
+        run: textblast engine info
+      - name: Tests
+        run: python -m pytest -ra
