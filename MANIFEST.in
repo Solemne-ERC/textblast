@@ -1,0 +1,5 @@
+# The source distribution: the package, its tests and the example configuration, never an engine.
+graft tests
+include configs/example.yaml
+prune src/textblast/_engine
+global-exclude __pycache__ *.py[cod]

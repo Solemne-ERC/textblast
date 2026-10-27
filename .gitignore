@@ -14,6 +14,7 @@ htmlcov/
 # Run outputs and engine builds, if created inside the repository
 runs/
 engine/_build/
+src/textblast/_engine/
 
 # Private and local: data, development documents, third-party references, tool settings
 data/

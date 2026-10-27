@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Text reuse detection with a patched NCBI BLAST engine and a data-agnostic Python pipeline."
 readme = "README.md"
 license = "MIT"
-license-files = ["LICENSE"]
+license-files = ["LICENSE", "licenses/*"]
 authors = [{ name = "Gleb Schmidt" }]
 requires-python = ">=3.10"
 dependencies = [
@@ -28,6 +28,10 @@ textblast = "textblast.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+# The engine bundled in platform wheels (put there by the wheel build; absent from the repository and the sdist).
+[tool.setuptools.package-data]
+textblast = ["_engine/engine.json", "_engine/bin/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
