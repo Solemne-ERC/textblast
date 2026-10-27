@@ -1,0 +1,30 @@
+{
+  "title": "textblast: text reuse detection with a patched NCBI BLAST engine",
+  "upload_type": "software",
+  "version": "0.9.0",
+  "description": "textblast detects text reuse in historical document collections. It normalizes and encodes texts as protein-like sequences, aligns them with NCBI BLAST+ patched for text (a uniform match/mismatch matrix and matching gap costs), and maps every hit back to exact character offsets of the input. It then joins, defragments, annotates, filters and clusters the hits, and exports tables and formats for analysis. It works on any collection of texts in the Latin script, given as JSON Lines.",
+  "creators": [
+    {
+      "name": "Schmidt, Gleb",
+      "orcid": "0000-0001-6925-551X",
+      "affiliation": "Radboud University, Faculty of Arts, Humanities Lab"
+    }
+  ],
+  "keywords": [
+    "text reuse",
+    "intertextuality",
+    "sequence alignment",
+    "BLAST",
+    "historical texts",
+    "Latin",
+    "digital humanities",
+    "computational philology"
+  ],
+  "license": "mit",
+  "access_right": "open",
+  "grants": [
+    {
+      "id": "10.13039/501100000780::101087979"
+    }
+  ]
+}

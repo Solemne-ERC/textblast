@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from textblast import cli, logs
+from textblast import __version__, cli, logs
 from textblast.engine.build import (
     EXCLUDED_PROJECTS,
     BuildError,
@@ -74,7 +74,7 @@ def test_cli_help_and_version(capsys: pytest.CaptureFixture[str]) -> None:
         with pytest.raises(SystemExit) as exit_info:
             cli.main(argv)
         assert exit_info.value.code == 0
-    assert "0.1.0" in capsys.readouterr().out
+    assert __version__ in capsys.readouterr().out
 
 
 def test_cli_reports_missing_engine(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
