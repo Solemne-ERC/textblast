@@ -1,4 +1,4 @@
-"""Annotations of pieces: unit overlaps, masked share, encoded ranges (plan section 8; Q33; round 4).
+"""Annotations of pieces: unit overlaps, masked share, encoded ranges.
 
 Units come from the store's ``units.parquet`` (``doc_idx, loc, start, length``, surface code points). They may
 overlap or nest in general (not in the current corpus); every function here handles that.
@@ -121,7 +121,7 @@ def encoded_range(store: CorpusStore, doc: np.ndarray, start: np.ndarray, end: n
     return enc_start, enc_end
 
 
-# --------------------------------------------------------------------------- formulae and reference sets (Q29)
+# --------------------------------------------------------------------------- formulae and reference sets
 
 
 def doc_degree(pieces: pl.DataFrame, pairs: pl.DataFrame) -> np.ndarray:

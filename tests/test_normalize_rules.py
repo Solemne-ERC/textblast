@@ -1,4 +1,4 @@
-"""Every rule of normalization.md (plus the user's round-3 decisions), with expected text and spans."""
+"""Every normalization rule, with expected text and spans."""
 
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ def test_ligatures_and_long_s(profile: str) -> None:
 
 @pytest.mark.parametrize("profile", ["latin", "latin-broad"])
 def test_letter_folds(profile: str) -> None:
-    """j → i, v → u (shared), w → u, y → i (round 3), k → c (round 5), upper and lower case, exact spans."""
+    """j → i, v → u (shared), w → u, y → i, k → c, upper and lower case, exact spans."""
     for source, target in (("j", "i"), ("J", "i"), ("v", "u"), ("V", "u"), ("w", "u"), ("W", "u"), ("y", "i"),
                            ("Y", "i"), ("k", "c"), ("K", "c")):
         assert pairs(profile, source) == [(target, source)]

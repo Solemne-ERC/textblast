@@ -1,4 +1,4 @@
-"""M3 units: filters, defragmentation rules, btop and clipping, annotations, alignment strings, API (no engine)."""
+"""Post-processing: filters, defragmentation, btop and clipping, annotations, alignment strings, API (no engine)."""
 
 from __future__ import annotations
 
@@ -162,7 +162,7 @@ def test_etl_limits_and_non_transitivity() -> None:
 
 def test_node_similarity_bug_and_fix() -> None:
     _, compat = node_similarity_groups([0, 2], [1000, 50], 0.9, compat=True)
-    assert compat == [(1, 525)]  # finding 10: the nested short piece shrinks the long one
+    assert compat == [(1, 525)]  # the nested short piece shrinks the long one
     groups, fixed = node_similarity_groups([0, 2], [1000, 50], 0.9, compat=False)
     assert groups == [0, 1] and fixed == [(0, 1000), (2, 50)]
 

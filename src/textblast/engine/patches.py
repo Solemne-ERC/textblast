@@ -1,4 +1,4 @@
-"""Content-based patches that adapt NCBI BLAST+ to text reuse (plan section 4, notes findings 6 and 13).
+"""Content-based patches that adapt NCBI BLAST+ to text reuse .
 
 Each patcher finds its target by content, never by line number. It leaves an already-patched file unchanged and
 fails with a clear message when its target is missing or ambiguous.

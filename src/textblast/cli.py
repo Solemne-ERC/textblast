@@ -1,4 +1,4 @@
-"""Command-line interface: ``textblast <command> ...`` (plan section 10)."""
+"""Command-line interface: ``textblast <command> ...``."""
 
 from __future__ import annotations
 

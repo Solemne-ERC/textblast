@@ -1,4 +1,4 @@
-"""Checks on the user's corpus (marker ``corpus``; skipped when data/corpus.jsonl or docs/reference is absent)."""
+"""Checks on a local corpus (marker ``corpus``; skipped when data/corpus.jsonl or docs/reference is absent)."""
 
 from __future__ import annotations
 

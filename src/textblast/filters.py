@@ -1,4 +1,4 @@
-"""Pair filter and hit filter (plan section 8; notes Q24, Q25, "Series filter (before M3)").
+"""Pair filter and hit filter.
 
 Both are Polars SQL expressions with passim's convention: a field of the first document is written as is
 (``date``), the same field of the second document with the suffix ``2`` (``date2``).
@@ -28,8 +28,8 @@ class FilterError(ValueError):
 
 # Hit filters with a name, for use as @name in filters.hit_filter. None is on by default (recall is paramount).
 NAMED_FILTERS: dict[str, str] = {
-    # formulae: pieces linked to 30 or more documents and shorter than 60 letters (notes, "Expert review of the M5
-    # page": 19 of 20 such pieces judged formulae; 45% fewer pairs for 0–3.4 points of recall on the corpus)
+    # formulae: pieces linked to 30 or more documents and shorter than 60 letters (in an expert review of a Latin
+    # corpus, 19 of 20 such pieces were formulae; 45% fewer pairs for 0–3.4 points of recall)
     "no_formulae": "NOT ((doc_degree1 >= 30 AND piece_letters1 < 60) OR (doc_degree2 >= 30 AND piece_letters2 < 60))",
     # reuse mediated by the Bible: both pieces mostly covered by hits with Bible documents (needs the reference set
     # `bible` in annotate.reference_sets)

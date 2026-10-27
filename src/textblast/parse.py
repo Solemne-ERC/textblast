@@ -1,4 +1,4 @@
-"""BLAST tabular output → raw hits with exact surface offsets (plan sections 8 and 9).
+"""BLAST tabular output → raw hits with exact surface offsets.
 
 BLAST reports 1-based inclusive coordinates in the encoded letters; they are converted here, exactly once, to 0-based
 end-exclusive encoded coordinates and mapped to the surface text through the corpus store. Sides are ordered so that

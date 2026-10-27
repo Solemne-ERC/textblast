@@ -1,4 +1,4 @@
-"""Normalization steps (plan section 6).
+"""Normalization steps.
 
 A step turns a :class:`Spanned` text into another one; spans always point back to the surface text. Built-in steps are
 registered by name; custom steps are loaded by import path (``class_path`` + ``init_args``) and must subclass
@@ -86,7 +86,7 @@ class Step:
 
 # --------------------------------------------------------------------------- classified spans
 
-# Declared gaps and export scaffolding (from the user's normalization material).
+# Declared gaps and export scaffolding (conventions of the transcriptions this normalization was written for).
 GAP_PATTERN = re.compile(
     r"\[(?:\s*\.{2,}\s*|[^\]]*\b(?:lacuna|omitted|illegible)\b[^\]]*)\]|\.{3,}|…", re.IGNORECASE
 )
@@ -171,7 +171,7 @@ SUPPORTED_MARKS = frozenset(
 # Letters whose meaning is certain but which Unicode decomposition does not resolve. ``ł`` attached to a word is an
 # abbreviation stroke on l (concił → concil); a standalone ``ł`` means *vel* (handled in context, see Graphemes).
 LETTER_SPECIALS = {"ę": "ae", "Ę": "ae", "ı": "i", "ł": "l", "Ł": "l"}
-# Signs with a fixed meaning in this material (round 5): ¬ is a line-break hyphen inside a word, ˙ is punctuation.
+# Signs with a fixed meaning in early modern Latin prints: ¬ is a line-break hyphen inside a word, ˙ is punctuation.
 # < and > enclose editorial supplements: punctuation by default, removed silently inside a word (see Graphemes).
 SIGN_SPECIALS = {"¬": ("silent", "line_break_hyphen"), "˙": ("sep", "punctuation"), "<": ("sep", "punctuation"),
                  ">": ("sep", "punctuation")}
@@ -467,7 +467,7 @@ BUILTIN_STEPS: dict[str, Callable[..., Step]] = {
     "graphemes": Graphemes,
     "fold_jv": lambda: Fold({"j": "i", "v": "u"}, name="fold_jv"),
     "fold_wy": lambda: Fold({"w": "u", "y": "i"}, name="fold_wy"),
-    # k is a spelling variant of c in Latin (kalendae/calendae, karitas/caritas, Karolus/Carolus; round 5)
+    # k is a spelling variant of c in Latin (kalendae/calendae, karitas/caritas, Karolus/Carolus)
     "fold_kc": lambda: Fold({"k": "c"}, name="fold_kc"),
     "delete_h": lambda: DeleteLetters("h", reason="spelling_h", name="delete_h"),
     "vowel_pairs": VowelPairs,

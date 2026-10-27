@@ -1,4 +1,4 @@
-"""Reading and validating the input corpus (plan section 5).
+"""Reading and validating the input corpus.
 
 Input: JSONL or JSONL.gz, one document per line with ``doc_id``, ``text``, optional metadata (passed through), optional
 units (passim ``locs`` format ``[{loc, start, length}]``) and optional classified spans

@@ -1,4 +1,4 @@
-"""Encoding normalized letters as BLAST protein symbols (plan section 6, notes Q10 and findings 8, 14).
+"""Encoding normalized letters as BLAST protein symbols.
 
 Letters map one-to-one to the 23 symbols that score +9 against themselves in the patched matrix. ``X`` is never used
 for a letter (``X/X`` scores −5); it only builds barriers. Masked letters become lowercase symbols (BLAST runs with
@@ -115,7 +115,7 @@ def encode_document(doc: Spanned, table: EncodingTable, barrier_length: int = BA
 
 
 def suggest_table(counts: Mapping[str, int], name: str = "suggested") -> EncodingTable:
-    """Frequent letters get single-letter seed groups; the rest share groups, frequent with rare (notes Q10).
+    """Frequent letters get single-letter seed groups; the rest share groups, frequent with rare.
 
     The cost of a shared group is the chance that two different letters of it meet in a seed (the product of their
     frequencies). With room to spare, the most frequent remaining letters keep a group to themselves; the others are

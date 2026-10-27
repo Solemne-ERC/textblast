@@ -55,7 +55,7 @@ def test_default_block_letters_gives_ten_jobs_per_worker() -> None:
 
 
 def test_presets_and_overrides() -> None:
-    default = resolved_settings(BlastOptions())  # decided after M4: comp_based_stats 0, evalue 1e-3
+    default = resolved_settings(BlastOptions())  # comp_based_stats 0, evalue 1e-3
     assert BlastOptions().preset == "textblast"
     with pytest.raises(ValueError, match="now called 'textblast'"):
         resolved_settings(BlastOptions(preset="solemne-blast"))

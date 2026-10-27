@@ -1,10 +1,10 @@
-"""Normalization profiles: ordered steps plus the letter → symbol table (plan section 6, notes Q9–Q10).
+"""Normalization profiles: ordered steps plus the letter → symbol table.
 
-Tables are frozen per profile, not computed per corpus (notes Q10, round 3), so results do not depend on the corpus
-under ``-comp_based_stats 2``. Regenerate a table with ``textblast alphabet suggest``. Since M5, ``latin-broad``
-uses the reference letter order: under the default ``-comp_based_stats 0`` the table barely matters (M4: 99.98%
-identical hits), and the round-3 rule then prefers the reference (notes, "Defaults after M4"). The frequency-based
-table stays available as ``latin-broad-frozen``.
+Tables are fixed per profile, not computed per corpus, so results do not depend on the corpus under
+``-comp_based_stats 2``. Suggest a table for another corpus with ``textblast alphabet suggest``. ``latin-broad``
+uses the letter order of the established text-reuse normalization: under the default ``-comp_based_stats 0`` the
+table barely matters (99.98% identical hits against a frequency-based table on a Latin corpus), so the established
+order is preferred. The frequency-based table stays available as ``latin-broad-frozen``.
 """
 
 from __future__ import annotations
@@ -36,8 +36,8 @@ class Profile:
 LATIN_STEPS = ("spans", "graphemes", "fold_jv", "fold_wy", "fold_kc")
 LATIN_BROAD_STEPS = (*LATIN_STEPS, "delete_h", "vowel_pairs", "ci_vowel")
 
-# Frozen from `textblast alphabet suggest --profile latin-broad` on the user's corpus (M1, 2026-10-23, with
-# k → c from round 5; ranking in docs/reports/m1_corpus.md). Letters: a b c d e f g i l m n o p q r s t u x z (20).
+# Frozen from `textblast alphabet suggest --profile latin-broad` on a corpus of early modern Latin texts
+# (2026-10-23, with k → c). Letters: a b c d e f g i l m n o p q r s t u x z (20).
 # The 9 most frequent letters (i e u t s a n r o, 70% of all letters) have single-letter seed groups; m, the most
 # frequent of the rest, has the D/B group to itself; the others pair frequent with rare (c/z, d/x, p/f, l/g, b/q),
 # which is the optimum for this corpus (checked exhaustively). The ambiguity codes B, J, Z stay unused.
@@ -53,8 +53,8 @@ LATIN_TABLE: dict[str, str] | None = {
     "q": "B",
 }
 
-# The user's reference ENCODING (aggressive_normalization.py), restricted to the 20 letters of latin-broad (w, y and k
-# are folded away): latin-broad's table since M5. It has no h, so the non-broad profile keeps its frozen table.
+# The letter encoding of the established text-reuse normalization, restricted to the 20 letters of latin-broad
+# (w, y and k are folded away): latin-broad's table. It has no h, so the non-broad profile keeps its frozen table.
 _REFERENCE_ENCODING = dict(zip("abcdefgiklmnopqrstuwxyz", "ARNDCQEGHILKMFPSTWYVBJZ", strict=True))
 LATIN_BROAD_REFTABLE = {k: v for k, v in _REFERENCE_ENCODING.items() if k not in "wyk"}
 LATIN_BROAD_TABLE = LATIN_BROAD_REFTABLE
@@ -77,13 +77,13 @@ PROFILES: dict[str, Profile] = {
             "latin-broad-frozen",
             LATIN_BROAD_STEPS,
             LATIN_BROAD_FROZEN_TABLE,
-            "latin-broad with the frequency-based table of M1–M4 (reproduces runs made before M5).",
+            "latin-broad with the earlier frequency-based table (reproduces runs made with it).",
         ),
         Profile(
             "latin-broad-reftable",
             LATIN_BROAD_STEPS,
             LATIN_BROAD_REFTABLE,
-            "The same as latin-broad since M5 (its M4 name, kept so M4's settings still run).",
+            "The same as latin-broad (an earlier name, kept so that older settings still run).",
         ),
         Profile(
             "latin",

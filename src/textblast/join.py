@@ -1,13 +1,13 @@
-"""Joining nearby hits of a document pair into one hit (plan section 8; Q26; notes, "Expert review of the M4 lists").
+"""Joining nearby hits of a document pair into one hit.
 
 Two hits of the same pair are joined when they are consecutive in both documents (no other hit of the pair starts
 between them), in the same order in both, and the gap between them is at most ``gap`` letters in both documents.
 Gaps are measured in encoded letters, so spaces and punctuation do not count; overlapping neighbours (a negative gap)
 are joined too, unless they are a repeat: by default no two hits are joined that overlap by more than half of the
-shorter one in either document (``max_overlap``). Such hits are one phrase matched twice, not one borrowing (notes,
-"Expert review of the M5 page"). Joining is transitive along a chain. Unit boundaries are ignored (decided after M4).
+shorter one in either document (``max_overlap``). Such hits are usually one phrase matched twice, not one borrowing.
+Joining is transitive along a chain. Unit boundaries are ignored.
 
-Joining is off by default (decided after the M5 review): raw hits stay the unit. ``join_map`` is written on every
+Joining is off by default: raw hits stay the unit. ``join_map`` is written on every
 run as an annotation (raw hit → the group it would be joined into, and the group's size), so a reader sees which
 hits continue each other. With ``enabled`` the joined hits are also built as a view (``hsps_joined``, one row per
 group; a hit without a partner is its own group). Nothing is deleted.
@@ -26,11 +26,11 @@ RATIO_SLACK = 20
 
 @dataclass
 class JoinOptions:
-    enabled: bool = False  # also build the joined view, tables/hsps_joined.parquet (off: decided after M5's review)
-    gap: int = 500  # letters, in both documents (agreed after M4; about 600 characters)
+    enabled: bool = False  # also build the joined view, tables/hsps_joined.parquet
+    gap: int = 500  # letters, in both documents (about 600 characters)
     max_overlap: float | None = 0.5  # repeat guard: no joint if the hits overlap by more than this share of the
-    #   shorter one in either document (after M5's review); None = off
-    max_drift: int | None = None  # |gap1 − gap2| ≤ max_drift; off by default (M4: drift does not separate)
+    #   shorter one in either document; None = off
+    max_drift: int | None = None  # |gap1 − gap2| ≤ max_drift; off by default (drift did not separate cases)
     min_gap_ratio: float | None = None  # (shorter + 20) / (longer + 20) ≥ ratio; off by default (insertion guard)
 
 

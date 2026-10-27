@@ -1,4 +1,4 @@
-"""``textblast plan``: blocks, databases and jobs (plan section 7; notes Q17 with the round 3 correction).
+"""``textblast plan``: blocks, databases and jobs.
 
 Every pair of documents is searched exactly once and no document is ever searched against itself:
 

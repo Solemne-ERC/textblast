@@ -1,4 +1,4 @@
-"""Text with an exact span map back to the surface text (plan section 6, notes Q12–Q16).
+"""Text with an exact span map back to the surface text.
 
 Every character of the current text knows the span ``[start, end)`` of the *original* input text it comes from (0-based,
 end-exclusive Unicode code points). Steps always map back to the surface directly, so span maps compose automatically:

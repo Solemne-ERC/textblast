@@ -1,8 +1,8 @@
-"""Alignments rebuilt from BLAST's ``btop`` (plan section 8; notes Q30).
+"""Alignments rebuilt from BLAST's ``btop``.
 
 ``btop`` is written from the query's side: a number is a run of identical letters, a two-letter token is one column
 (query letter, subject letter), with ``-`` for a gap. Verified against BLAST's ``qseq``/``sseq`` on 2,727 sample hits
-(M3): the tokens rebuild both aligned strings exactly, and the numbers sum to ``nident``.
+: the tokens rebuild both aligned strings exactly, and the numbers sum to ``nident``.
 
 An alignment is handled as columns: whether each column consumes a letter of side 1 and of side 2, and whether it is
 an identity. Columns are always oriented ``doc1``/``doc2`` (``query_side`` tells how to swap).
