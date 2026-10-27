@@ -25,8 +25,10 @@ env:
   PYTHONUNBUFFERED: "1"
   # The oldest macOS the bundled binaries run on (macOS 11 is the first on Apple silicon).
   MACOSX_DEPLOYMENT_TARGET: "11.0"
-  # OpenMP in the Linux engine: auto = on (libgomp is then copied into the wheel by auditwheel).
-  WHEEL_OPENMP: auto
+  # The bundled engine is built without OpenMP: with one thread per worker (the default) it does nothing, and on a
+  # 64-thread server it gained 4% only with two threads per worker under comp_based_stats 2. Without it, no libgomp
+  # goes into the Linux wheel. `textblast engine build` on Linux still uses OpenMP by default.
+  WHEEL_OPENMP: "off"
   MANYLINUX: manylinux_2_28_x86_64
 
 jobs:
