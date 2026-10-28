@@ -1,5 +1,7 @@
 # textblast
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23729155.svg)](https://doi.org/10.5281/zenodo.23729155)
+
 Text reuse detection for historical document collections. textblast finds the passages that documents share
 (quotations, borrowings, copied formulae, reused paragraphs) with NCBI BLAST+, patched for text, and reports each
 one at its exact place in your original texts, whatever spelling, abbreviations and transcription errors stood in the
@@ -19,7 +21,9 @@ pip install textblast
 ```
 
 Python 3.10 or newer. The wheels for **macOS on Apple silicon** (macOS 11 or newer) and **Linux x86_64** carry the
-patched BLAST engine, so nothing else is needed. Check it with `textblast engine check`.
+patched BLAST engine, so nothing else is needed. Check it with `textblast engine check`. (macOS's own `python3` is
+3.9: with it, pip answers only that no matching distribution was found. Use a newer Python, e.g. from python.org,
+Homebrew or pyenv.)
 
 **Other platforms** (Linux on ARM, Intel Macs) install from source and build the engine once:
 
@@ -94,7 +98,8 @@ Changes are listed in the [changelog](CHANGELOG.md).
 ## Citation
 
 If you use textblast, please cite it: [`CITATION.cff`](CITATION.cff) has the details, and GitHub's "Cite this
-repository" turns them into BibTeX or APA. Each release is archived on Zenodo with its own DOI.
+repository" turns them into BibTeX or APA. Every release is archived on Zenodo: the DOI
+[10.5281/zenodo.23729155](https://doi.org/10.5281/zenodo.23729155) stands for all versions, and each version's record has its own DOI.
 
 ## Licence
 
