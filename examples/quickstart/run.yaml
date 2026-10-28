@@ -1,0 +1,6 @@
+# The quickstart: eight invented letters (examples/quickstart/letters.jsonl). Every option not given here keeps its
+# default; configs/example.yaml lists them all.
+input: examples/quickstart/letters.jsonl
+run_dir: runs/quickstart
+export:
+  formats: [pairs_flat]
