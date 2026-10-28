@@ -103,7 +103,7 @@ the US Government, and libraries under their own licences: see [`licenses/`](lic
 
 ## Acknowledgements
 
-Funded by the European Union (ERC, SOLEMNE, 101087979). Views and opinions expressed are however those of the
+Funded by the European Union (ERC, SOLEMNE, 101087979, PI Dr. Sven Meeder, Radboud University). Views and opinions expressed are however those of the
 author(s) only and do not necessarily reflect those of the European Union or the European Research Council Executive
 Agency. Neither the European Union nor the granting authority can be held responsible for them.
 
