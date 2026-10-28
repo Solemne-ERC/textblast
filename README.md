@@ -1,6 +1,8 @@
 # textblast
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23729155.svg)](https://doi.org/10.5281/zenodo.23729155)
+[![PyPI](https://img.shields.io/pypi/v/textblast)](https://pypi.org/project/textblast/)
+[![CI](https://github.com/Solemne-ERC/textblast/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Solemne-ERC/textblast/actions/workflows/ci.yml)
 
 Text reuse detection for historical document collections. textblast finds the passages that documents share
 (quotations, borrowings, copied formulae, reused paragraphs) with NCBI BLAST+, patched for text, and reports each
