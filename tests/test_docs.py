@@ -22,7 +22,7 @@ def anchors(path: Path) -> set[str]:
 
 def test_relative_links_resolve() -> None:
     broken = []
-    for page in [REPO / "README.md", REPO / "licenses" / "README.md", *GUIDE.glob("*.md")]:
+    for page in [REPO / "README.md", REPO / "RELEASING.md", REPO / "licenses" / "README.md", *GUIDE.glob("*.md")]:
         for target in LINK.findall(page.read_text(encoding="utf-8")):
             if re.match(r"[a-z]+:", target):
                 continue  # http(s) links are not checked here
