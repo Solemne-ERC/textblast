@@ -4,6 +4,10 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+  # Weekly on main: catches breakage from new releases of Polars, NumPy or Python before users do, and keeps the
+  # engine caches warm (GitHub evicts caches unused for seven days).
+  schedule:
+    - cron: "0 5 * * 1"
 
 permissions:
   contents: read
