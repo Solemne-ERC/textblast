@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.9.1 (2026-10-30)
+
+Credits, licences and metadata. Commands, configuration and outputs are the same as in 0.9.0.
+
 - Package metadata: classifiers (Python 3.10–3.14, macOS and Linux) and keywords, for PyPI.
 - README: badges for the DOI, the PyPI version and CI; the concept DOI in the citation section; a note that macOS's
   own Python 3.9 is too old.

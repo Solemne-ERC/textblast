@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
 title: "textblast: text reuse detection with a patched NCBI BLAST engine"
-version: 0.9.0
+version: 0.9.1
 license: MIT
 doi: 10.5281/zenodo.23729155
 repository-code: "https://github.com/Solemne-ERC/textblast"

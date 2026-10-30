@@ -2,7 +2,7 @@
 
 import logging
 
-__version__ = "0.9.0"
+__version__ = "0.9.1"
 
 # A library never configures output handlers; the CLI does (see textblast.logs.setup_logging).
 logging.getLogger("textblast").addHandler(logging.NullHandler())
