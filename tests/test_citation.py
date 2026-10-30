@@ -30,3 +30,13 @@ def test_citation_and_zenodo_agree() -> None:
     assert authors == [(c["name"], c["orcid"], c["affiliation"]) for c in zenodo["creators"]]
     assert zenodo["upload_type"] == "software"
     assert zenodo["grants"] == [{"id": "10.13039/501100000780::101087979"}]  # ERC, SOLEMNE (European Commission)
+
+
+def test_references_agree() -> None:
+    """The work textblast builds on is credited in both files, one Zenodo line per CFF reference."""
+    cff = yaml.safe_load(CFF.read_text(encoding="utf-8"))
+    zenodo = json.loads(ZENODO.read_text(encoding="utf-8"))
+    titles = [r["title"] for r in cff["references"]]
+    assert "textreuse-blast" in titles and len(zenodo["references"]) == len(titles)
+    for title, line in zip(titles, zenodo["references"], strict=True):
+        assert title in line

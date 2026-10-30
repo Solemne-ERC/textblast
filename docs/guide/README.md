@@ -16,11 +16,14 @@ transcription errors, and it works on any collection of texts in the Latin scrip
 
 ## How it works
 
+The method is not new: it is that of Vesanto et al. (2017) and their tool textreuse-blast, which textblast
+re-implements. The README's [Background](../../README.md#background) says what comes from which tool.
+
 1. **Prepare.** Each text is normalized (case, accents, spelling variants such as `u`/`v`, abbreviation marks) and
    reduced to a small alphabet of letters. Every letter is encoded as an amino-acid symbol, so that the text becomes a
    protein-like sequence. The corpus store keeps, for every encoded letter, the exact span of the input it came from.
-2. **Search.** NCBI BLAST+ compares every pair of documents once. textblast uses BLAST+ 2.17.0 with two patches for
-   text: a uniform scoring matrix (+9 for a match, −5 for a mismatch, the same for every letter) and gap costs to
+2. **Search.** NCBI BLAST+ compares every pair of documents once. textblast uses BLAST+ 2.17.0 with textreuse-blast's two
+   patches for text: a uniform scoring matrix (+9 for a match, −5 for a mismatch, the same for every letter) and gap costs to
    match. The documents are split into blocks, and each pair of blocks is one job, so the work spreads over all cores
    and an interrupted run resumes where it stopped.
 3. **Merge.** The jobs' hits are mapped back to exact character offsets of the input and gathered into one table.

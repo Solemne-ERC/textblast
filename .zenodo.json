@@ -2,7 +2,7 @@
   "title": "textblast: text reuse detection with a patched NCBI BLAST engine",
   "upload_type": "software",
   "version": "0.9.0",
-  "description": "textblast detects text reuse in historical document collections. It normalizes and encodes texts as protein-like sequences, aligns them with NCBI BLAST+ patched for text (a uniform match/mismatch matrix and matching gap costs), and maps every hit back to exact character offsets of the input. It then joins, defragments, annotates, filters and clusters the hits, and exports tables and formats for analysis. It works on any collection of texts in the Latin script, given as JSON Lines.",
+  "description": "textblast detects text reuse in historical document collections. The method is not new: textblast is a newer and faster implementation of the method of Vesanto et al. (2017) and their tool textreuse-blast. It normalizes and encodes texts as protein-like sequences, aligns them with NCBI BLAST+ patched for text as in textreuse-blast (a uniform match/mismatch matrix and matching gap costs), and maps every hit back to exact character offsets of the input. It then joins, defragments, annotates, filters and clusters the hits, and exports tables and formats for analysis. It works on any collection of texts in the Latin script, given as JSON Lines.",
   "creators": [
     {
       "name": "Schmidt, Gleb",
@@ -27,5 +27,14 @@
     {
       "id": "10.13039/501100000780::101087979"
     }
+  ],
+  "references": [
+    "Vesanto, A., Nivala, A., Rantala, H., Salakoski, T., Salmi, H., & Ginter, F. (2017). Applying BLAST to Text Reuse Detection in Finnish Newspapers and Journals, 1771–1910. In Proceedings of the NoDaLiDa 2017 Workshop on Processing Historical Language (pp. 54–58). https://aclanthology.org/W17-0510/",
+    "Vesanto, A. textreuse-blast [Computer software]. https://github.com/avjves/textreuse-blast",
+    "Helsinki Computational History Group (COMHIS). text-reuse-blast-custom [Computer software]. https://github.com/COMHIS/text-reuse-blast-custom",
+    "Mahadevan, A. HPC-HD-TextReuse-ETL [Computer software]. https://github.com/ananth1996/HPC-HD-TextReuse-ETL",
+    "Rosson, D., Mäkelä, E., Vaara, V., Mahadevan, A., Ryan, Y., & Tolonen, M. (2023). Reception Reader: Exploring Text Reuse in Early Modern British Publications. Journal of Open Humanities Data, 9, 5. https://doi.org/10.5334/johd.101",
+    "Smith, D. A. passim [Computer software]. https://github.com/dasmiq/passim",
+    "Smith, D. A., Cordell, R., & Mullen, A. (2015). Computational Methods for Uncovering Reprinted Texts in Antebellum Newspapers. American Literary History, 27(3), E1–E15. https://doi.org/10.1093/alh/ajv029"
   ]
 }

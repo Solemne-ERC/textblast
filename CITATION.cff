@@ -7,9 +7,11 @@ license: MIT
 doi: 10.5281/zenodo.23729155
 repository-code: "https://github.com/Solemne-ERC/textblast"
 abstract: >-
-  textblast detects text reuse in historical document collections. It normalizes and encodes texts as protein-like
-  sequences, aligns them with NCBI BLAST+ patched for text (a uniform match/mismatch matrix and matching gap costs),
-  and maps every hit back to exact character offsets of the input. It then joins, defragments, annotates, filters and
+  textblast detects text reuse in historical document collections. The method is not new: textblast is a newer and
+  faster implementation of the method of Vesanto et al. (2017) and their tool textreuse-blast. It normalizes and
+  encodes texts as protein-like sequences, aligns them with NCBI BLAST+ patched for text as in textreuse-blast (a
+  uniform match/mismatch matrix and matching gap costs), and maps every hit back to exact character offsets of the
+  input. It then joins, defragments, annotates, filters and
   clusters the hits, and exports tables and formats for analysis. It works on any collection of texts in the Latin
   script, given as JSON Lines.
 authors:
@@ -27,3 +29,82 @@ keywords:
   - Latin
   - digital humanities
   - computational philology
+references:
+  - type: conference-paper
+    title: "Applying BLAST to Text Reuse Detection in Finnish Newspapers and Journals, 1771–1910"
+    authors:
+      - family-names: Vesanto
+        given-names: Aleksi
+      - family-names: Nivala
+        given-names: Asko
+      - family-names: Rantala
+        given-names: Heli
+      - family-names: Salakoski
+        given-names: Tapio
+      - family-names: Salmi
+        given-names: Hannu
+      - family-names: Ginter
+        given-names: Filip
+    year: 2017
+    collection-title: "Proceedings of the NoDaLiDa 2017 Workshop on Processing Historical Language"
+    start: 54
+    end: 58
+    url: "https://aclanthology.org/W17-0510/"
+  - type: software
+    title: textreuse-blast
+    authors:
+      - family-names: Vesanto
+        given-names: Aleksi
+    license: MIT
+    repository-code: "https://github.com/avjves/textreuse-blast"
+  - type: software
+    title: text-reuse-blast-custom
+    authors:
+      - name: "Helsinki Computational History Group (COMHIS)"
+    repository-code: "https://github.com/COMHIS/text-reuse-blast-custom"
+  - type: software
+    title: HPC-HD-TextReuse-ETL
+    authors:
+      - family-names: Mahadevan
+        given-names: Ananth
+    repository-code: "https://github.com/ananth1996/HPC-HD-TextReuse-ETL"
+  - type: article
+    title: "Reception Reader: Exploring Text Reuse in Early Modern British Publications"
+    authors:
+      - family-names: Rosson
+        given-names: David
+      - family-names: Mäkelä
+        given-names: Eetu
+      - family-names: Vaara
+        given-names: Ville
+      - family-names: Mahadevan
+        given-names: Ananth
+      - family-names: Ryan
+        given-names: Yann
+      - family-names: Tolonen
+        given-names: Mikko
+    year: 2023
+    journal: "Journal of Open Humanities Data"
+    volume: 9
+    doi: 10.5334/johd.101
+  - type: software
+    title: passim
+    authors:
+      - family-names: Smith
+        given-names: David A.
+    license: MIT
+    repository-code: "https://github.com/dasmiq/passim"
+  - type: article
+    title: "Computational Methods for Uncovering Reprinted Texts in Antebellum Newspapers"
+    authors:
+      - family-names: Smith
+        given-names: David A.
+      - family-names: Cordell
+        given-names: Ryan
+      - family-names: Mullen
+        given-names: Abby
+    year: 2015
+    journal: "American Literary History"
+    volume: 27
+    issue: 3
+    doi: 10.1093/alh/ajv029
