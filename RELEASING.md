@@ -38,7 +38,7 @@ at the top of [`CHANGELOG.md`](CHANGELOG.md).
    git push origin vX.Y.Z
    ```
 3. **The tag's Wheels run** builds the macOS and Linux wheels and the sdist, installs each wheel on clean runners
-   (macOS 14 and 15, Ubuntu 22.04 and 24.04) for the install proof, uploads to TestPyPI, and then waits for approval
+   (macOS 15 and 26, Ubuntu 22.04 and 24.04) for the install proof, uploads to TestPyPI, and then waits for approval
    before PyPI. If a macOS job is cancelled because no runner picked it up, re-run the failed jobs
    (`gh run rerun <run id> --failed`); that is GitHub's capacity, not the code.
 4. **Test** the TestPyPI package in a fresh virtualenv, with Python 3.10 or newer (macOS's own `python3` is 3.9, with

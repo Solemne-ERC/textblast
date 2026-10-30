@@ -148,8 +148,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { os: macos-14, wheel: wheel-macos, python: "3.10" }
-          - { os: macos-15, wheel: wheel-macos, python: "3.14" }
+          - { os: macos-15, wheel: wheel-macos, python: "3.10" }
+          - { os: macos-26, wheel: wheel-macos, python: "3.14" }
           - { os: ubuntu-22.04, wheel: wheel-linux, python: "3.10" }
           - { os: ubuntu-24.04, wheel: wheel-linux, python: "3.14" }
     runs-on: ${{ matrix.os }}
