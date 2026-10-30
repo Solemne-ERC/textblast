@@ -1,7 +1,7 @@
 {
   "title": "textblast: text reuse detection with a patched NCBI BLAST engine",
   "upload_type": "software",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "textblast detects text reuse in historical document collections. The method is not new: textblast is a newer and faster implementation of the method of Vesanto et al. (2017) and their tool textreuse-blast. It normalizes and encodes texts as protein-like sequences, aligns them with NCBI BLAST+ patched for text as in textreuse-blast (a uniform match/mismatch matrix and matching gap costs), and maps every hit back to exact character offsets of the input. It then joins, defragments, annotates, filters and clusters the hits, and exports tables and formats for analysis. It works on any collection of texts in the Latin script, given as JSON Lines.",
   "creators": [
     {
