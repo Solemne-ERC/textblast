@@ -9,6 +9,11 @@ Text reuse detection for historical document collections. textblast finds the pa
 one at its exact place in your original texts, whatever spelling, abbreviations and transcription errors stood in the
 way. It works on any collection of texts in the Latin script.
 
+**The method is not new.** Finding text reuse by writing letters as amino-acid symbols and aligning the texts with
+BLAST was introduced by Aleksi Vesanto and colleagues at the University of Turku (Vesanto et al. 2017), with their
+tool textreuse-blast and a BLAST patched for text. textblast is a newer and faster implementation of their method:
+[Background](#background) says what comes from where.
+
 - **Input:** one JSON Lines file, one document per line, with optional metadata, page or chapter units, and spans to
   delete, mask or wall off.
 - **Output:** Parquet tables of hits, passages and pairs, with exact character offsets; flat tables with excerpts;
@@ -97,16 +102,66 @@ Changes are listed in the [changelog](CHANGELOG.md).
   Support for other scripts, with particular attention to Cyrillic, is planned for a later version.
 - Repetition inside one document is not reported: a document is never compared with itself.
 
+## Background
+
+textblast does not introduce a new method. It re-implements an existing one, together with the patches and rules of
+the tools that developed it:
+
+- **The method** is that of Vesanto et al. (2017), at the University of Turku: each letter becomes one of the
+  amino-acid symbols that BLAST works with, all documents are compared with each other, and the hits are
+  post-processed into passages of reuse. Their implementation is
+  [textreuse-blast](https://github.com/avjves/textreuse-blast) (Aleksi Vesanto).
+- **The two patches to BLAST** (a uniform scoring matrix, and the statistical parameters for gap costs 3/11) are
+  Aleksi Vesanto's changes for textreuse-blast, as documented and ported to BLAST 2.13 by the Helsinki Computational
+  History Group (COMHIS) in [text-reuse-blast-custom](https://github.com/COMHIS/text-reuse-blast-custom). textblast
+  makes the same changes to BLAST+ 2.17.0.
+- **The rules that merge hits into passages** come from three tools:
+  - `etl`, the default, re-implements the rule of the ETL behind [Reception Reader](https://receptionreader.com)
+    (Rosson et al. 2023; [HPC-HD-TextReuse-ETL](https://github.com/ananth1996/HPC-HD-TextReuse-ETL), Ananth
+    Mahadevan);
+  - `node_similarity` is adapted from textreuse-blast's clusterizer;
+  - `passim` follows the span linking of [passim](https://github.com/dasmiq/passim) (David A. Smith; Smith et al.
+    2015).
+- **For comparisons,** the `compat-eng` and `compat-fin` profiles use textreuse-blast's letter tables unchanged, and
+  the `textreuse-blast` and `comhis` presets use the settings of textreuse-blast and of COMHIS's runs. passim's `locs`
+  field and output formats and the ETL's input format are supported as they are.
+
+What textblast contributes is the implementation:
+
+- **Newer:** BLAST+ 2.17.0, built from NCBI's source and checked by textblast itself, or included in the wheels; a
+  package that installs with `pip`.
+- **Faster:** on one corpus of 39 million letters, on the same 14-core laptop and with textreuse-blast's own
+  settings, textblast took 8 minutes from the input texts to passages, where textreuse-blast's pipeline took
+  106 minutes: 13 times faster. Most of the difference is that textblast runs many BLAST jobs in parallel, where
+  textreuse-blast runs one query at a time. (textreuse-blast ran on BLAST 2.13.0 and textblast on 2.17.0, which on
+  its own is only slightly faster.)
+- **More to work with:** offsets in the original texts, configurable normalization, masked and walled-off spans,
+  page or chapter units, resumable runs on a laptop or a cluster, Parquet tables and exports.
+
+### References
+
+- Vesanto, A., Nivala, A., Rantala, H., Salakoski, T., Salmi, H., & Ginter, F. (2017). Applying BLAST to text reuse
+  detection in Finnish newspapers and journals, 1771–1910. In *Proceedings of the NoDaLiDa 2017 Workshop on
+  Processing Historical Language* (pp. 54–58). https://aclanthology.org/W17-0510/
+- Rosson, D., Mäkelä, E., Vaara, V., Mahadevan, A., Ryan, Y., & Tolonen, M. (2023). Reception Reader: Exploring text
+  reuse in early modern British publications. *Journal of Open Humanities Data*, 9, 5.
+  https://doi.org/10.5334/johd.101
+- Smith, D. A., Cordell, R., & Mullen, A. (2015). Computational methods for uncovering reprinted texts in antebellum
+  newspapers. *American Literary History*, 27(3), E1–E15. https://doi.org/10.1093/alh/ajv029
+
 ## Citation
 
 If you use textblast, please cite it: [`CITATION.cff`](CITATION.cff) has the details, and GitHub's "Cite this
 repository" turns them into BibTeX or APA. Every release is archived on Zenodo: the DOI
 [10.5281/zenodo.23729155](https://doi.org/10.5281/zenodo.23729155) stands for all versions, and each version's record has its own DOI.
+Please also cite Vesanto et al. (2017), who introduced the method.
 
 ## Licence
 
 textblast is under the [MIT licence](LICENSE). The wheels contain programs of NCBI BLAST+, a public-domain work of
-the US Government, and libraries under their own licences: see [`licenses/`](licenses/README.md).
+the US Government, and libraries under their own licences. textblast also contains textreuse-blast's letter tables,
+under textreuse-blast's MIT licence. [`licenses/`](licenses/README.md) has all these licences and says what comes
+from each of the tools above.
 
 ## Acknowledgements
 

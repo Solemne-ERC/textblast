@@ -6,6 +6,11 @@
 - README: badges for the DOI, the PyPI version and CI; the concept DOI in the citation section; a note that macOS's
   own Python 3.9 is too old.
 - `RELEASING.md`: how a release is made. CI also runs weekly.
+- Credit for the method: the README says plainly that the method is not new and that textblast is a newer and faster
+  implementation of the method of Vesanto et al. (2017) and their tool textreuse-blast. A new Background section says
+  what comes from which tool (the BLAST patches, the merge rules, the compatibility profiles and presets), with
+  references. `CITATION.cff` and `.zenodo.json` list the same references. `licenses/` adds textreuse-blast's MIT
+  licence, which applies to its letter tables, included in textblast, and lists what is taken from each tool.
 
 ## 0.9.0 (2026-10-28)
 
