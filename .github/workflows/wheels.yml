@@ -48,7 +48,7 @@ jobs:
       # The deployment target is not part of the fingerprint, so this cache is separate from the CI engine's.
       - name: Restore the engine
         id: cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: ${{ steps.key.outputs.engine_dir }}
           key: wheel-macos-15-${{ env.MACOSX_DEPLOYMENT_TARGET }}-${{ steps.key.outputs.key }}
@@ -57,7 +57,7 @@ jobs:
         run: textblast engine build --openmp "$WHEEL_OPENMP"
       - name: Save the engine
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: ${{ steps.key.outputs.engine_dir }}
           key: wheel-macos-15-${{ env.MACOSX_DEPLOYMENT_TARGET }}-${{ steps.key.outputs.key }}
@@ -89,7 +89,7 @@ jobs:
         run: python .github/scripts/engine_key.py "$WHEEL_OPENMP"
       - name: Restore the engine
         id: cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: |
             ${{ steps.key.outputs.engine_dir }}
@@ -103,7 +103,7 @@ jobs:
             "quay.io/pypa/$MANYLINUX" bash /io/.github/scripts/build_linux_wheel.sh
       - name: Save the engine
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: |
             ${{ steps.key.outputs.engine_dir }}
